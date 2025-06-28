@@ -29,7 +29,7 @@ public class MedicoController {
 
         var uri =uriBuilder.path("/medicos/{id}").buildAndExpand(medico.getId()).toUri();
 
-        return  ResponseEntity.created(uri).body(new DadosDetalhamentoMedico(medico));
+        return ResponseEntity.created(uri).body(new DadosDetalhamentoMedico(medico));
     }
 
     @GetMapping
@@ -48,7 +48,7 @@ public class MedicoController {
 
     @DeleteMapping("/{id}")
     @Transactional
-    public ResponseEntity exlcuir(@PathVariable Long id){
+    public ResponseEntity excluir(@PathVariable Long id){
         var medico = repository.getReferenceById(id);
         medico.excluir();
         return ResponseEntity.noContent().build();
