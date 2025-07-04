@@ -1,6 +1,5 @@
 package med.voll.api.infra.security;
 
-import jakarta.servlet.Filter;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -14,9 +13,17 @@ import java.io.IOException;
 public class SecurityFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-
-        //chama o próximo filtro
+        var tokenJWT = recuperarToken(request);
+        System.out.println(tokenJWT);
+        //chama o próximo filtro. (se não tiver realiza a solicitão ao controller)
         filterChain.doFilter(request, response);
+    }
 
+    private String recuperarToken(HttpServletRequest request) {
+        var authorizationHeader = request.getHeader("Authorization");
+        if (authorizationHeader == null){
+            throw new RuntimeException("TokenJWT não enviado no cabeçalho Autorization!");
+        }
+        return authorizationHeader.replace("Bearer", "");
     }
 }
