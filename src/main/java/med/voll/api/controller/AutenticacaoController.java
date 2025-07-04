@@ -30,6 +30,8 @@ public class AutenticacaoController {
         var authenticationToken = new UsernamePasswordAuthenticationToken(dados.login(), dados.senha());
         var authentication = manager.authenticate(authenticationToken);
 
+        //aqui ele já viu que pode entrar então cria um token para liberar o acesso as funções.
+        //o token criado com base na pessoa por causa do getPrincipal().
         var tokenJWT = tokenService.gerarToken((Usuario) authentication.getPrincipal());
         return ResponseEntity.ok(new DadosTokenJWT(tokenJWT));
     }
