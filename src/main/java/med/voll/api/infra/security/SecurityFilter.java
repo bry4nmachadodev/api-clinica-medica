@@ -24,19 +24,23 @@ public class SecurityFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        System.out.println("CHAMANDO FILTER");
+        // recupera o token JWT do cabeçalho Authorization da requisição
         var tokenJWT = recuperarToken(request);
 
-        if(tokenJWT!= null) {
+        // verifica se o token não é nulo, ou seja, se existe um token na requisição
+        if(tokenJWT != null) {
+            // extrai o subject (usuário) do token, validando-o internamente
             var subject = tokenService.getSubject(tokenJWT);
+            // busca o usuário no banco de dados pelo login extraído do token
             var usuario = repository.findByLogin(subject);
 
+            // cria um objeto de autenticação contendo o usuário e suas permissões
             var authentication = new UsernamePasswordAuthenticationToken(usuario, null, usuario.getAuthorities());
+            // configura o contexto de segurança do Spring com o usuário autenticado
             SecurityContextHolder.getContext().setAuthentication(authentication);
-            System.out.println("LOGADO NA REQUISIÇÃO");
         }
 
-        //chama o próximo filtro. (se não tiver realiza a solicitão ao controller)
+        // continua o fluxo da requisição, chamando o próximo filtro ou controller
         filterChain.doFilter(request, response);
     }
 
@@ -49,3 +53,8 @@ public class SecurityFilter extends OncePerRequestFilter {
     }
 
 }
+
+
+//Mas então, por que criar o authentication e configurar o SecurityContextHolder?
+//Porque mesmo o token sendo válido, o Spring Security não sabe disso ainda.
+//O token é uma prova de que você está autenticado, mas o Spring só passa a "acreditar" nisso quando você registra explicitamente a autenticação no contexto usando:
