@@ -59,7 +59,7 @@ class MedicoControllerTest {
     void cadastrarCenario1() throws Exception {
 
         var medicoSalvo = new Medico(
-                1L,
+                null,
                 "layla",
                 "layla@email.com",
                 "22998382412",
