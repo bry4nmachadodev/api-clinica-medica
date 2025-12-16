@@ -5,7 +5,10 @@ import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import med.voll.api.domain.consulta.Consulta;
 import med.voll.api.domain.endereco.Endereco;
+
+import java.util.List;
 
 @Table(name = "pacientes")
 @Entity(name = "Paciente")
@@ -29,6 +32,9 @@ public class Paciente {
 
     private Boolean ativo;
 
+    public List<Consulta> consultas;
+
+
     public Paciente(DadosCadastroPaciente dados) {
         this.ativo = true;
         this.nome = dados.nome();
@@ -49,6 +55,10 @@ public class Paciente {
             this.endereco.atualizarInformacoes(dados.endereco());
         }
 
+    }
+
+    public List<Consulta> consultas(){
+        return consultas();
     }
 
     public void excluir() {
