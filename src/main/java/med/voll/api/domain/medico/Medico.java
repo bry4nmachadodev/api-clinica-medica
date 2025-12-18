@@ -12,6 +12,7 @@ import med.voll.api.domain.endereco.Endereco;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode(of="id")
 public class Medico {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
