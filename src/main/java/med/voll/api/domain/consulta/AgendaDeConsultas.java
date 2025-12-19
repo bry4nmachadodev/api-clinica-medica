@@ -80,10 +80,7 @@ public class AgendaDeConsultas {
 
     public Page<DadosDetalhamentoConsulta> listar(Pageable paginacao) {
         return consultaRepository.findAll(paginacao)
-                .map(c -> new DadosDetalhamentoConsulta(
-                        c.getId(),
-                        c.getMedico().getId(),
-                        c.getPaciente().getId(),
-                        c.getData()));
+                .map(DadosDetalhamentoConsulta::new);
     }
+
 }
