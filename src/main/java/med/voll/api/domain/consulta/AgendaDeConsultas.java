@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class AgendaDeConsultas {
@@ -73,5 +74,14 @@ public class AgendaDeConsultas {
 
         var consulta = consultaRepository.getReferenceById(dados.idConsulta());
         consulta.cancelar(dados.motivo());
+    }
+
+    public List<DadosDetalhamentoConsulta> listar() {
+        return consultaRepository.findAll().stream().
+                map(c -> new DadosDetalhamentoConsulta(c.getId(),
+                        c.getMedico().getId(),
+                        c.getPaciente().getId(),
+                        c.getData()))
+                .collect(Collectors.toList());
     }
 }

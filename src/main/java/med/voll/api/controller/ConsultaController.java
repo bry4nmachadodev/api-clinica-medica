@@ -12,6 +12,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("consultas")
 @SecurityRequirement(name = "bearer-key")
@@ -19,6 +21,11 @@ public class ConsultaController {
 
     @Autowired
     private AgendaDeConsultas agenda;
+
+    @GetMapping
+    public ResponseEntity<List<DadosDetalhamentoConsulta>> listar(){
+        return ResponseEntity.ok(agenda.listar()) ;
+    }
 
     @PostMapping
     @Transactional
