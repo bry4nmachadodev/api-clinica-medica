@@ -7,6 +7,8 @@ import med.voll.api.domain.medico.Medico;
 import med.voll.api.domain.medico.MedicoRepository;
 import med.voll.api.domain.paciente.PacienteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -76,12 +78,12 @@ public class AgendaDeConsultas {
         consulta.cancelar(dados.motivo());
     }
 
-    public List<DadosDetalhamentoConsulta> listar() {
-        return consultaRepository.findAll().stream().
-                map(c -> new DadosDetalhamentoConsulta(c.getId(),
+    public Page<DadosDetalhamentoConsulta> listar(Pageable paginacao) {
+        return consultaRepository.findAll(paginacao)
+                .map(c -> new DadosDetalhamentoConsulta(
+                        c.getId(),
                         c.getMedico().getId(),
                         c.getPaciente().getId(),
-                        c.getData()))
-                .collect(Collectors.toList());
+                        c.getData()));
     }
 }
